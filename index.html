@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Happy Birthday Shivkriti!</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #fdf6e3; color: #5c4d5c; margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+    
+    .stage { display: none; flex-direction: column; align-items: center; justify-content: center; width: 90%; max-width: 400px; text-align: center; animation: fadeIn 0.8s ease-in-out; }
+    .active-stage { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    input[type="text"] { padding: 12px; border: 2px solid #ffb7b2; border-radius: 8px; font-size: 1rem; width: 100%; margin-bottom: 15px; background: #fff; color: #5c4d5c; outline: none; text-align: center; }
+    button { background: #ffb7b2; color: white; border: none; padding: 12px 28px; border-radius: 20px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 183, 178, 0.4); transition: transform 0.2s; }
+    button:active { transform: scale(0.95); }
+
+    .gift-box { width: 120px; height: 120px; background: #b5ead7; position: relative; border-radius: 8px; cursor: pointer; box-shadow: inset 0 -10px 0 rgba(0,0,0,0.1); margin-top: 20px; }
+    .gift-box::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 20px; background: #ffdac1; transform: translateX(-50%); }
+    .gift-box::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 20px; background: #ffdac1; transform: translateY(-50%); }
+    .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake { 10%, 90% { transform: translate3d(-2px, 0, 0); } 20%, 80% { transform: translate3d(4px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
+
+    .cake { position: relative; width: 160px; height: 100px; background: #ffdac1; border-radius: 12px 12px 0 0; margin-top: 40px; box-shadow: inset 0 -20px 0 #ffb7b2; }
+    .candle { position: absolute; top: -35px; width: 14px; height: 35px; background: #e2f0cb; border-radius: 4px; }
+    .c1 { left: 20%; } .c2 { left: 50%; transform: translateX(-50%); } .c3 { right: 20%; }
+    .flame { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); width: 16px; height: 24px; background: #ff9aa2; border-radius: 50% 50% 20% 20%; animation: flicker 0.15s infinite alternate; cursor: pointer; }
+    .flame.off { display: none; }
+    @keyframes flicker { 0% { transform: translateX(-50%) scale(1); } 100% { transform: translateX(-50%) scale(1.1); } }
+
+    .scratch-container { position: relative; width: 320px; height: 500px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: #fff; }
+    .content-underneath { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; }
+    .content-underneath img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid #b5ead7; margin-bottom: 15px; }
+    .content-underneath h2 { margin: 0 0 12px 0; color: #ff9aa2; font-size: 1.4rem; }
+    .content-underneath p { font-size: 0.95rem; line-height: 1.5; margin: 0; }
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: crosshair; }
+    .error { color: #ff9aa2; font-size: 0.95rem; display: none; margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" loop>
+    <source src="senorita.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="stage1" class="stage active-stage">
+    <h2 style="color: #ffb7b2;">Security Check 🔒</h2>
+    <p>To access this birthday surprise, answer the security question:</p>
+    <p><i>Dad ki family ne nana-nani ji se kitna liya tha?</i></p>
+    <input type="text" id="password" placeholder="Enter amount...">
+    <button onclick="checkPassword()">Unlock</button>
+    <p id="errorMsg" class="error">Incorrect answer. Try again!</p>
+  </div>
+
+  <div id="stage2" class="stage">
+    <h2 style="color: #b5ead7;">Access Granted!</h2>
+    <p>Tap your gift to open it.</p>
+    <div class="gift-box" onclick="openGift()"></div>
+  </div>
+
+  <div id="stage3" class="stage">
+    <h2 style="color: #ffdac1;">Make a Wish ✨</h2>
+    <p>Tap the flames to blow out your candles!</p>
+    <div class="cake">
+      <div class="candle c1"><div class="flame" onclick="extinguish(this)"></div></div>
+      <div class="candle c2"><div class="flame" onclick="extinguish(this)"></div></div>
+      <div class="candle c3"><div class="flame" onclick="extinguish(this)"></div></div>
+    </div>
+  </div>
+
+  <div id="stage4" class="stage">
+    <h3 style="margin-bottom: 15px; color: #ffb7b2;">Scratch the card below! 🪙</h3>
+    <div class="scratch-container">
+      <div class="content-underneath">
+        <img src="photo.jpg" alt="Shivkriti and Me">
+        <h2>SHIVKRITI<br>(გაუტამი)</h2>
+        <p>Happy Birthday! Through all the absolute madness and plot twists of life, you have been one of the most real, resilient, and amazing people I know. I cherish the fact that we can talk about literally anything without any judgment. You deserve all the happiness, peace, and success in the world today and always. I’m incredibly lucky to call you my friend.</p>
+      </div>
+      <canvas id="scratchCanvas"></canvas>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  
+  <script>
+    function nextStage(current, next) {
+      document.getElementById('stage' + current).classList.remove('active-stage');
+      document.getElementById('stage' + next).classList.add('active-stage');
+    }
+
+    function checkPassword() {
+      const input = document.getElementById('password').value.toLowerCase().trim();
+      const validAnswers = ["17", "17 lakh", "17 lakhs", "1700000", "17lakh", "17,00000", "17,00,000"];
+
+      if (validAnswers.includes(input)) { 
+        document.getElementById('bgMusic').play().catch(e => console.log("Audio blocked", e));
+        nextStage(1, 2);
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    }
+
+    function openGift() {
+      const gift = document.querySelector('.gift-box');
+      gift.classList.add('shake');
+      setTimeout(() => { nextStage(2, 3); }, 600);
+    }
+
+    let activeFlames = 3;
+    function extinguish(element) {
+      if (element.classList.contains('off')) return;
+      element.classList.add('off');
+      activeFlames--;
+      
+      if (activeFlames === 0) {
+        setTimeout(() => { nextStage(3, 4); initScratchCard(); }, 500);
+      }
+    }
+
+    function initScratchCard() {
+      const canvas = document.getElementById('scratchCanvas');
+      const ctx = canvas.getContext('2d');
+      const container = document.querySelector('.scratch-container');
+      
+      canvas.width = container.offsetWidth;
+      canvas.height = container.offsetHeight;
+
+      ctx.fillStyle = '#e6e6fa';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.font = '22px Segoe UI';
+      ctx.fillStyle = '#5c4d5c';
+      ctx.textAlign = 'center';
+      ctx.fillText('Scratch Here!', canvas.width / 2, canvas.height / 2);
+
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.lineWidth = 45;
+      ctx.globalCompositeOperation = 'destination-out';
+
+      let isDrawing = false;
+
+      function getCoordinates(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+      }
+
+      function startDrawing(e) { isDrawing = true; const { x, y } = getCoordinates(e); ctx.beginPath(); ctx.moveTo(x, y); }
+      function scratch(e) { if (!isDrawing) return; e.preventDefault(); const { x, y } = getCoordinates(e); ctx.lineTo(x, y); ctx.stroke(); }
+      function stopDrawing() { if (isDrawing) { isDrawing = false; checkScratchCompletion(); } }
+
+      canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', scratch);
+      canvas.addEventListener('mouseup', stopDrawing); canvas.addEventListener('mouseleave', stopDrawing);
+      canvas.addEventListener('touchstart', startDrawing, { passive: false });
+      canvas.addEventListener('touchmove', scratch, { passive: false }); canvas.addEventListener('touchend', stopDrawing);
+
+      let confettiFired = false;
+      function checkScratchCompletion() {
+        if (confettiFired) return;
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let transparentPixels = 0; const totalPixels = imageData.data.length / 4;
+        for (let i = 3; i < imageData.data.length; i += 4) { if (imageData.data[i] === 0) transparentPixels++; }
+        
+        if ((transparentPixels / totalPixels) * 100 > 40) {
+          confettiFired = true;
+          confetti({ particleCount: 250, spread: 120, origin: { y: 0.6 }, colors: ['#ffb7b2', '#ffdac1', '#b5ead7', '#e2f0cb', '#e6e6fa'] });
+          canvas.style.transition = "opacity 1s ease-out"; canvas.style.opacity = "0";
+          setTimeout(() => canvas.remove(), 1000);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
