@@ -31,7 +31,18 @@
 
     .scratch-container { position: relative; width: 320px; height: 500px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: #fff; }
     .content-underneath { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; }
-    .content-underneath img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid #b5ead7; margin-bottom: 15px; }
+    
+    /* Here is the updated CSS for the image featuring object-position: top; */
+    .content-underneath img { 
+      width: 130px; 
+      height: 130px; 
+      border-radius: 50%; 
+      object-fit: cover; 
+      object-position: top; 
+      border: 4px solid #b5ead7; 
+      margin-bottom: 15px; 
+    }
+    
     .content-underneath h2 { margin: 0 0 12px 0; color: #ff9aa2; font-size: 1.4rem; }
     .content-underneath p { font-size: 0.95rem; line-height: 1.5; margin: 0; }
     canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: crosshair; }
