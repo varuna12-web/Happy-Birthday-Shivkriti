@@ -32,17 +32,6 @@
     .scratch-container { position: relative; width: 320px; height: 500px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: #fff; }
     .content-underneath { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; }
     
-    /* Image styling updated to pull the face into the frame */
-    .content-underneath img { 
-      width: 130px; 
-      height: 130px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      object-position: top; 
-      border: 4px solid #b5ead7; 
-      margin-bottom: 15px; 
-    }
-    
     .content-underneath h2 { margin: 0 0 12px 0; color: #ff9aa2; font-size: 1.4rem; }
     .content-underneath p { font-size: 0.95rem; line-height: 1.5; margin: 0; }
     canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: crosshair; }
@@ -84,8 +73,10 @@
     <h3 style="margin-bottom: 15px; color: #ffb7b2;">Scratch the card below! 🪙</h3>
     <div class="scratch-container">
       <div class="content-underneath">
-        <!-- New permanent image link from GitHub Issues -->
-        <img src="https://github.com/user-attachments/assets/3b4b56c9-5b04-4104-a224-04d4b9a067e5" alt="Shivkriti">
+        
+        <!-- CACHE BUSTER IMAGE FIX -->
+        <img src="photo.png?v=1" alt="Shivkriti" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; border: 4px solid #b5ead7; margin-bottom: 15px;">
+        
         <h2>SHIVKRITI<br>(გაუტამი)</h2>
         <p>Happy Birthday! Through all the absolute madness and plot twists of life, you have been one of the most real, resilient, and amazing people I know. I cherish the fact that we can talk about literally anything without any judgment. You deserve all the happiness, peace, and success in the world today and always. I’m incredibly lucky to call you my friend.</p>
       </div>
